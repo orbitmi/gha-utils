@@ -1,0 +1,23 @@
+name: Repository data
+
+on:
+  workflow_call:
+
+jobs:
+  sonarcloud:
+    name: Get repository data
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repo data
+        id: repo_data
+        uses: htec-infra/gha-utils/utils/repo-data@VERSION
+      - name: Print output
+        run: |
+          echo Organization name: "${{ steps.repo_data.outputs.org_name }}"
+          echo Repository name: "${{ steps.repo_data.outputs.repo_name }}"
+          echo App reversion: "${{ steps.repo_data.outputs.app_version }}"
+          echo App reversion: "${{ steps.repo_data.outputs.app_revision }}"
+          echo App release type: "${{ steps.repo_data.outputs.app_release_type }}"
+          echo Container repo: "${{ steps.repo_data.outputs.container_repo }}"
+          echo Branch ref: "${{ steps.repo_data.outputs.branch_ref }}"
+          echo Head branch ref: "${{ steps.repo_data.outputs.head_branch_ref }}"

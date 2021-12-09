@@ -1,0 +1,15 @@
+name: Comment PR
+
+on:
+  workflow_call:
+
+jobs:
+  sonarcloud:
+    name: Comment PR
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment PR
+        id: comment_pr
+        uses: htec-infra/gha-utils/utils/comment-pr@VERSION
+        with:
+          token: "${{ GITHUB_TOKEN }}"

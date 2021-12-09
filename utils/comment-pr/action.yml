@@ -1,0 +1,23 @@
+name: 'Container operations'
+description: 'Publish comment on PR'
+
+inputs:
+  token:
+    description: 'Github access token'
+    required: true
+
+
+runs:
+  using: "composite"
+  steps:
+    - id: repo_data
+      shell: bash
+      run: ${{ github.action_path }}/../scripts/repo_data.sh
+    - name: Comment PR
+      uses: actions/github-script@v5
+      with:
+        github-token: ${{ inputs.token }}
+        script: |
+          const { GITHUB_ACTION_PATH } = process.env
+          const script = require(`${GITHUB_ACTION_PATH}/../scripts/comment_pr.js`)
+          await script({github, context})

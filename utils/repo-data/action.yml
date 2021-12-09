@@ -1,0 +1,35 @@
+name: 'Repository data'
+description: 'Fetch repository and organization name'
+
+outputs:
+  repo_name:
+    description: "Repository name"
+    value: ${{ steps.repo_data.outputs.APP_REPO_NAME }}
+  org_name:
+    description: "Organization name"
+    value: ${{ steps.repo_data.outputs.APP_REPO_ORG }}
+  app_version:
+    description: "Application version"
+    value: ${{ steps.repo_data.outputs.APP_VERSION }}
+  app_revision:
+    description: "Application revision"
+    value: ${{ steps.repo_data.outputs.APP_REVISION }}
+  app_release_type:
+    description: "Application release type"
+    value: ${{ steps.repo_data.outputs.APP_RELEASE_TYPE }}
+  docker_repo:
+    description: "Docker repository"
+    value: ${{ steps.repo_data.outputs.DOCKER_REPO }}
+  branch_ref:
+    description: "Branch reference"
+    value: ${{ steps.repo_data.outputs.GITHUB_REF }}
+  head_branch_ref:
+    description: "Head branch reference"
+    value: ${{ steps.repo_data.outputs.GITHUB_HEAD_REF }}
+
+runs:
+  using: "composite"
+  steps:
+    - id: repo_data
+      shell: bash
+      run: ${{ github.action_path }}/../scripts/repo_data.sh

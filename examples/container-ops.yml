@@ -1,0 +1,17 @@
+name: Container ops
+
+on:
+  workflow_call:
+
+jobs:
+  sonarcloud:
+    name: Build and push container image to repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repo data
+        id: container_ops
+        uses: htec-infra/gha-utils/utils/container-ops@VERSION
+        with:
+          dockerfile: "path/to/file/Dockerfile"
+          push_image: "true or false" # default true
+          registry_login: "true of false " #default false
