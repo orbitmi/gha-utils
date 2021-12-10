@@ -12,4 +12,4 @@ jobs:
         id: comment_pr
         uses: htec-infra/gha-utils/utils/comment-pr@VERSION
         with:
-          token: "${{ env.GITHUB_TOKEN }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"

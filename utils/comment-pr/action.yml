@@ -19,5 +19,5 @@ runs:
         github-token: ${{ inputs.token }}
         script: |
           const { GITHUB_ACTION_PATH } = process.env
-          const script = require(`${GITHUB_ACTION_PATH}/../scripts/comment_pr.js`)
+          const script = require(`${GITHUB_ACTION_PATH}/../../scripts/comment_pr.js`)
           await script({github, context})
