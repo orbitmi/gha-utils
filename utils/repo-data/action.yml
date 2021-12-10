@@ -32,4 +32,4 @@ runs:
   steps:
     - id: repo_data
       shell: bash
-      run: ${{ github.action_path }}/../scripts/repo_data.sh
+      run: ${{ github.action_path }}/../../scripts/repo_data.sh

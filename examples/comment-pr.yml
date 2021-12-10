@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  sonarcloud:
+  comment-pr:
     name: Comment PR
     runs-on: ubuntu-latest
     steps:
@@ -12,4 +12,4 @@ jobs:
         id: comment_pr
         uses: htec-infra/gha-utils/utils/comment-pr@VERSION
         with:
-          token: "${{ GITHUB_TOKEN }}"
+          token: "${{ secrets.GITHUB_TOKEN }}"

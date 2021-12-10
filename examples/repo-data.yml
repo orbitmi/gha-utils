@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  sonarcloud:
+  repo-data:
     name: Get repository data
     runs-on: ubuntu-latest
     steps:
