@@ -8,7 +8,7 @@ jobs:
     name: Build and push container image to repository
     runs-on: ubuntu-latest
     steps:
-      - name: Get repo data
+      - name: Build and push container image
         id: container_ops
         uses: htec-infra/gha-utils/utils/container-ops@VERSION
         with:
