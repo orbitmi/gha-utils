@@ -4,7 +4,7 @@ on:
   workflow_call:
 
 jobs:
-  sonarcloud:
+  container-ops:
     name: Build and push container image to repository
     runs-on: ubuntu-latest
     steps:
