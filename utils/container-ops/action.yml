@@ -22,7 +22,7 @@ runs:
     - shell: bash
       run: |
         echo "::group::Container Operations"
-          ${{ github.action_path }}/../scripts/container_ops.sh \
+          ${{ github.action_path }}/../../scripts/container_ops.sh \
              "${{ inputs.dockerfile }}" \
              "${{ inputs.registry_login }}" \
              "${{ inputs.push_image }}"
