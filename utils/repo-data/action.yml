@@ -26,6 +26,9 @@ outputs:
   head_branch_ref:
     description: "Head branch reference"
     value: ${{ steps.repo_data.outputs.GITHUB_HEAD_REF }}
+  repo_summary:
+    description: "Repo summary"
+    value: ${{ steps.repo_data.outputs.REPO_SUMMARY }}
 
 runs:
   using: "composite"

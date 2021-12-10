@@ -5,6 +5,9 @@ inputs:
   token:
     description: 'Github access token'
     required: true
+  repo_summary:
+    description: 'Repo summary'
+    required: false
 
 
 runs:
@@ -15,9 +18,11 @@ runs:
       run: ${{ github.action_path }}/../../scripts/repo_data.sh
     - name: Comment PR
       uses: actions/github-script@v5
+      env:
+        PR_MSG: ${{ inputs.repo_summary || steps.repo_data.outputs.REPO_SUMMARY }}
       with:
         github-token: ${{ inputs.token }}
         script: |
-          const { GITHUB_ACTION_PATH } = process.env
+          const { GITHUB_ACTION_PATH, PR_MSG } = process.env
           const script = require(`${GITHUB_ACTION_PATH}/../../scripts/comment_pr.js`)
-          await script({github, context})
+          await script({github, context, pr_msg: PR_MSG})
