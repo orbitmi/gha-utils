@@ -11,6 +11,6 @@ jobs:
     steps:
       - name: Comment PR
         id: comment_pr
-        uses: htec-infra/gha-utils/utils/comment-pr@VERSION
+        uses: htec-infra/gha-utils/actions/comment-pr@VERSION
         with:
-          token: "${{ secrets.GITHUB_TOKEN }}"
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
