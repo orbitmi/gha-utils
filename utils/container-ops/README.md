@@ -1,6 +1,6 @@
 # container-ops
 
-Composite action used for bulding and puching container images.
+Composite action used for bulding and pushing container images.
 This workflow requires 3 mandatory parametes:
 - dockerfile (locaction of dockerfile)
 - push_image (Whether to push image to Docker Registry or not?)

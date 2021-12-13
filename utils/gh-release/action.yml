@@ -1,0 +1,21 @@
+name: 'Create Github Release'
+description: 'TBD sub-action that creates new GitHub release based on the repo parameters'
+
+inputs:
+  app_version:
+    description: 'Tag name'
+    required: false
+  app_revision:
+    description: 'Commit sha'
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: ${{ github.action_path }}/../../scripts/repo_data.sh
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: ${{ inputs.app_version || env.APP_VERSION }}
+        target_commitish: ${{ inputs.app_revision || env.APP_REVISION }}

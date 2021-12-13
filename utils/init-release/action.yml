@@ -1,0 +1,12 @@
+name: 'Trunk-based Development Processor'
+description: 'Multipurpose GitHub Action'
+inputs:
+  release_type:
+    description: 'Release type (major, minor, patch)'
+    required: true
+    default: 'patch'
+runs:
+  using: "composite"
+  steps:
+    - shell: bash
+      run: ${{ github.action_path }}/../../scripts/init_app_release.sh "${{ inputs.release_type }}"
