@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Build and push container image
         id: container_ops
-        uses: htec-infra/gha-utils/utils/container-ops@VERSION
+        uses: htec-infra/gha-utils/actions/container-ops@VERSION
         with:
           dockerfile: "path/to/file/Dockerfile"
           push_image: "true or false" # default true

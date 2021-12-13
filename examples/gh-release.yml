@@ -19,7 +19,7 @@ jobs:
           with:
             ref: ${{ env.APP_REVISION }}    
         - name: Create Release
-          uses: htec-infra/gha-utils/utils/gh-release@VERSION
+          uses: htec-infra/gha-utils/actions/gh-release@VERSION
           with:
             app_version: "${{ env.APP_REVISION }}" # optional
             app_revision: "rc-1" # optional
