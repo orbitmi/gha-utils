@@ -21,7 +21,7 @@ build() {
   DOCKER_FILE=${1:-infra/Dockerfile}
   DOCKER_BUILDKIT=1 docker build --progress=plain \
     --build-arg VERSION="${APP_VERSION}" --build-arg REVISION="${APP_REVISION}" \
-    -t "${DOCKER_IMG_TAG}" \
+    -t "${CONTAINER_IMG_TAG}" \
     -f "$DOCKER_FILE" .
 }
 
