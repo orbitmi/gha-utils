@@ -24,7 +24,7 @@ runs:
       run: ${{ github.action_path }}/../../scripts/init_app_release.sh "${{ inputs.release_type }}"
     - name: Cleanup previous release notes
       shell: bash
-      run: git rm "${{ inputs.docs_dir }}/chglog/release-notes*"
+      run: git rm --ignore-unmatch "${{ inputs.docs_dir }}/chglog/release-notes*"
     - name: Generate Release Notes
       uses: docker://quay.io/git-chglog/git-chglog:latest
       env:
