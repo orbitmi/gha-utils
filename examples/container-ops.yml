@@ -7,12 +7,11 @@ on:
 jobs:
   container-ops:
     name: Build and push container image to repository
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Build and push container image
         id: container_ops
         uses: htec-infra/gha-utils/actions/container-ops@VERSION
         with:
-          dockerfile: "path/to/file/Dockerfile"
-          push_image: "true or false" # default true
+          push_image: "true or false" # default false
           registry_login: "true of false " #default false
