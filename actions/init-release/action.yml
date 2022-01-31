@@ -21,7 +21,7 @@ runs:
       id: app_release
       env:
         ALOW_MULTIPLE_RELEASE: ${{ inputs.multi_release_branches }}
-      run: ${{ github.action_path }}/../scripts/init_app_release.sh "${{ inputs.release_type }}"
+      run: ${{ github.action_path }}/../../scripts/init_app_release.sh "${{ inputs.release_type }}"
     - name: Cleanup previous release notes
       shell: bash
       run: git rm "${{ inputs.docs_dir }}/chglog/release-notes*"
