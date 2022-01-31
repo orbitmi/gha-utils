@@ -13,6 +13,10 @@ inputs:
     description: 'Allow multiple release branch at the same time'
     required: true
     default: 'false'
+  config_dir:
+    description: 'Default directory for git-chglog configuration'
+    required: true
+    default: '.'
 runs:
   using: "composite"
   steps:
@@ -29,8 +33,10 @@ runs:
       uses: docker://quay.io/git-chglog/git-chglog:latest
       env:
         VERSION: ${{ steps.app_release.outputs.new_version }}
+        CONFIG_PATH: ${{ inputs.config_dir }}/.chglog/config.yml
+        OUTPUT_PATH: ${{ inputs.docs_dir }}/chglog/release-notes-${{ env.VERSION }}.md
       with:
-        args: -o "docs/chglog/release-notes-${{ env.VERSION }}.md" --next-tag "${{ env.VERSION }}" "${{ env.VERSION }}"
+        args: -c "${{ env.CONFIG_DIR }}" -o "${{ env.OUTPUT_PATH }}" --next-tag "${{ env.VERSION }}" "${{ env.VERSION }}"
     ###
     ### Do not move the following bash script into file, because previous script manipulates with the release branches
     ### which can cause replacement of the initial init_app_release.sh content
