@@ -2,17 +2,9 @@ name: 'Container operations'
 description: ' Build and Publish Docker image for applications packaged as docker artifact'
 
 inputs:
-  dockerfile:
-    description: 'Dockerfile location'
-    required: true
-    default: 'infra/Dockerfile'
   push_image:
     description: 'Whether to push image to Docker Registry or not?'
     required: true
-    default: 'true'
-  registry_login:
-    description: 'Determine registry and try to login automatically (for ECR and self-hosted runners)'
-    required: false
     default: 'false'
 
 
@@ -23,7 +15,5 @@ runs:
       run: |
         echo "::group::Container Operations"
           ${{ github.action_path }}/../../scripts/container_ops.sh \
-             "${{ inputs.dockerfile }}" \
-             "${{ inputs.registry_login }}" \
              "${{ inputs.push_image }}"
         echo "::endgroup::"

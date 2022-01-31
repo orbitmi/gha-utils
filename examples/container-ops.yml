@@ -13,6 +13,4 @@ jobs:
         id: container_ops
         uses: htec-infra/gha-utils/actions/container-ops@VERSION
         with:
-          dockerfile: "path/to/file/Dockerfile"
-          push_image: "true or false" # default true
-          registry_login: "true of false " #default false
+          push_image: "true or false" # default false
