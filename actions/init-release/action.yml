@@ -37,9 +37,9 @@ runs:
         OUTPUT_PATH: ${{ inputs.docs_dir }}/chglog/release-notes-${{ steps.app_release.outputs.new_version }}.md
       with:
         args: |
-          -c "${{ env.CONFIG_PATH }}" \
-          -o "${{ env.OUTPUT_PATH }}" \
-          --next-tag "${{ env.VERSION }}" \
+          -c "${{ env.CONFIG_PATH }}"
+          -o "${{ env.OUTPUT_PATH }}"
+          --next-tag "${{ env.VERSION }}"
           "${{ env.VERSION }}"
     ###
     ### Do not move the following bash script into file, because previous script manipulates with the release branches
