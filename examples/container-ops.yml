@@ -7,7 +7,7 @@ on:
 jobs:
   container-ops:
     name: Build and push container image to repository
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
       - name: Build and push container image
         id: container_ops
