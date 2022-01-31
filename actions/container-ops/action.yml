@@ -6,10 +6,6 @@ inputs:
     description: 'Whether to push image to Docker Registry or not?'
     required: true
     default: 'false'
-  registry_login:
-    description: 'Determine registry and try to login automatically (for ECR and self-hosted runners)'
-    required: false
-    default: 'false'
 
 
 runs:
@@ -19,6 +15,5 @@ runs:
       run: |
         echo "::group::Container Operations"
           ${{ github.action_path }}/../../scripts/container_ops.sh \
-             "${{ inputs.registry_login }}" \
              "${{ inputs.push_image }}"
         echo "::endgroup::"

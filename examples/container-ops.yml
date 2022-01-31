@@ -14,4 +14,3 @@ jobs:
         uses: htec-infra/gha-utils/actions/container-ops@VERSION
         with:
           push_image: "true or false" # default false
-          registry_login: "true of false " #default false
