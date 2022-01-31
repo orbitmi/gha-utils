@@ -34,9 +34,13 @@ runs:
       env:
         VERSION: ${{ steps.app_release.outputs.new_version }}
         CONFIG_PATH: ${{ inputs.config_dir }}/.chglog/config.yml
-        OUTPUT_PATH: ${{ inputs.docs_dir }}/chglog/release-notes-${{ env.VERSION }}.md
+        OUTPUT_PATH: ${{ inputs.docs_dir }}/chglog/release-notes-${{ steps.app_release.outputs.new_version }}.md
       with:
-        args: -c "${{ env.CONFIG_PATH }}" -o "${{ env.OUTPUT_PATH }}" --next-tag "${{ env.VERSION }}" "${{ env.VERSION }}"
+        args: |
+          -c "${{ env.CONFIG_PATH }}" \
+          -o "${{ env.OUTPUT_PATH }}" \
+          --next-tag "${{ env.VERSION }}" \
+          "${{ env.VERSION }}"
     ###
     ### Do not move the following bash script into file, because previous script manipulates with the release branches
     ### which can cause replacement of the initial init_app_release.sh content
