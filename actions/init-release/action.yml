@@ -5,8 +5,39 @@ inputs:
     description: 'Release type (major, minor, patch)'
     required: true
     default: 'patch'
+  docs_dir:
+    description: 'Default directory for changelogs'
+    required: true
+    default: 'docs'
+  multi_release_branches:
+    description: 'Allow multiple release branch at the same time'
+    required: true
+    default: 'false'
 runs:
   using: "composite"
   steps:
-    - shell: bash
-      run: ${{ github.action_path }}/../../scripts/init_app_release.sh "${{ inputs.release_type }}"
+    - name: Create release branch
+      shell: bash
+      id: app_release
+      env:
+        ALOW_MULTIPLE_RELEASE: ${{ inputs.multi_release_branches }}
+      run: ${{ github.action_path }}/../scripts/init_app_release.sh "${{ inputs.release_type }}"
+    - name: Cleanup previous release notes
+      shell: bash
+      run: git rm "${{ inputs.docs_dir }}/chglog/release-notes*"
+    - name: Generate Release Notes
+      uses: docker://quay.io/git-chglog/git-chglog:latest
+      env:
+        VERSION: ${{ steps.app_release.outputs.new_version }}
+      with:
+        args: -o "docs/chglog/release-notes-${{ env.VERSION }}.md" --next-tag "${{ env.VERSION }}" "${{ env.VERSION }}"
+    ###
+    ### Do not move the following bash script into file, because previous script manipulates with the release branches
+    ### which can cause replacement of the initial init_app_release.sh content
+    ###
+    - name: Commit and push changes to release branch
+      shell: bash
+      run: |
+        git add docs/*
+        git commit -m "[bot] Generate changelog/docs for $(git branch --show-current)"
+        git push --set-upstream origin $(git branch --show-current)
