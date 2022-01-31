@@ -1,14 +1,13 @@
 # container-ops
 
 Composite action used for bulding and pushing container images.
-This workflow requires 2 mandatory parametes:
-- push_image (Whether to push image to Docker Registry or not?)
-- registry_login (Determine registry and try to login automatically (for ECR and self-hosted runners)) 
+This workflow has following parametes:
+- push_to_registry (Determine registry and try to login automatically (for ECR and self-hosted runners)) if this parameter is set to "true" script will automatically resolve ECR host and login
 
-Currently registry_login is only supported for selfhosted runners on AWS.
+Currently push_to_registry is only supported for selfhosted runners on AWS.
 
 
-container_ops script depends on app.config that is by default located in infra/ folder.
+container_ops script has optional settings in infra/app.config.
 
 app.config has the following configuration:
 
@@ -31,3 +30,10 @@ CONTAINER_REPO=11111111.dkr.ecr.eu-west-1.amazonaws.com/something
 CONTAINER_DIR="infra3/"
 
 In this case we are telling the scipt that there are no additional services to be built and it will default to Dockerfile in infra3/ folder
+
+
+Default values:
+
+CONTAINER_REPO=localreg
+CONTAINER_DIR=infra/
+PUSH_TO_REGISTRY=false

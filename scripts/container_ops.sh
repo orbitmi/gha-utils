@@ -21,7 +21,8 @@ login() {
 build() {
   local CONTAINER_IMG_TAG="$1"
   local DOCKER_FILE="${2:-Dockerfile}"
-  DOCKER_BUILDKIT=0 docker build --progress=plain \
+
+  DOCKER_BUILDKIT=1 docker build --progress=plain \
     --build-arg VERSION="${APP_VERSION}" --build-arg REVISION="${APP_REVISION}" \
     -t "${CONTAINER_IMG_TAG}" \
     -f "${CONTAINER_DIR}""${DOCKER_FILE}" .
@@ -32,6 +33,7 @@ build() {
 #
 push() {
   local CONTAINER_IMG_TAG="$1"
+
   if [[ "${PUSH_TO_REGISTRY}" == "true" ]]; then
     docker push "${CONTAINER_IMG_TAG}"
   else
@@ -39,12 +41,27 @@ push() {
   fi
 }
 
+
+create_container_tag(){
+    local DOCKERFILE="$1"
+
+    if [[ "${DOCKERFILE}" == "Dockerfile" ]]; then
+      echo "${CONTAINER_REPO}:${APP_VERSION}"
+    else
+      SERVICE_NAME="/${DOCKERFILE%.*}"
+      CONTAINER_REPO=$(echo "${CONTAINER_REPO}" | cut -f1-2 -d "/")
+      echo "${CONTAINER_REPO}${SERVICE_NAME}:${APP_VERSION}"
+    fi
+}
+
+
 #
 # cleanup
 #
 cleanup() {
+  local REPO_DOMAIN=null
+
   if [[ ${CONTAINER_REPO} == *dkr.ecr* ]]; then
-    local REPO_DOMAIN=null
     REPO_DOMAIN="$(echo "$CONTAINER_REPO" | cut -d "/" -f 1)"
     docker logout "$REPO_DOMAIN"
   fi
@@ -62,7 +79,7 @@ run_cmd() {
   "${1}" "${2}" "${3}"
 
   echo ""
-  echo ">>> ${2} finished."
+  echo ">>> ${1} finished."
   echo ""
 }
 
@@ -72,19 +89,18 @@ run_cmd() {
 
 # >>>>>>>  Initialization
 # Input vars
-REGISTRY_LOGIN=${1:-""}
-PUSH_TO_REGISTRY=${2:-""}
+PUSH_TO_REGISTRY=${1:-"false"}
 
 # Static vars
 # TODO(improve logic for finding app.conf): Currently we have locked config location in infra/app.conf, we need to expand this feature
 # in order if someone wants to build something in folder_name/ and it has different registry from infra/app.conf.
 APP_CONFIG_FILE="${GITHUB_WORKSPACE}/infra/app.conf"
 CONTAINER_DIR="infra/"
-
+CONTAINER_REPO="localreg"
 
 main(){
  
-  # Check if app.conf is available if not exit the script 
+  # Check if app.conf is available and load vars from it
   if [[ -f "${APP_CONFIG_FILE}" ]]; then
     echo "Application Config detected! Loading parameters..."
     # shellcheck source=${GITHUB_WORKSPACE}/infra/app.conf
@@ -93,51 +109,47 @@ main(){
   else
 
     echo ""
-    echo "Application config is not available in ${APP_CONFIG_FILE}."
-    echo ">>> STOPPING! <<<"
-    echo ">>> STOPPING! <<<"
+    echo "Application Config is not detected!"
+    echo ">>> PROCEEDING <<<"
     echo ""
-    exit 1
-    
+
   fi
 
 
-  # Check if CONTAINER_REPO is defined in ${APP_CONFIG_FILE}
-  if [[ -z "${CONTAINER_REPO}" ]]; then
-    echo "Docker root repository is not defined. Aborting docker operations."
-    exit 1
+  # Check if CONTAINER_REPO is available (either from ${APP_CONFIG_FILE} or from env variable)
+  if [[ ${CONTAINER_REPO} == "localreg" ]];then
+    echo ""
+    echo "Container registry not provided. Using default value:"
+    echo ">>> ${CONTAINER_REPO} <<<"
+    echo ""
+  else
+    echo ""
+    echo "Container registry loaded:"
+    echo ">>> ${CONTAINER_REPO} <<<"
+    echo ""
+
   fi
 
-  if [[ "${REGISTRY_LOGIN}" == "true" ]]; then
+  if [[ "${PUSH_TO_REGISTRY}" == "true" ]]; then
     run_cmd login
   fi
-
+  # Check if container repo contains specific prefix 
+  # If true then create lis of all dockerfiles in the provided directory ${CONTAINER_DIR}
+  # Loop through each file, create tag, build, push and at the end perform cleanup.
   if [[ ${CONTAINER_REPO} == *"{container_prefix}"* ]];then
-
-      DOCKERFILES=$(cd "${CONTAINER_DIR}" || exit ; find * -name '*.Dockerfile')
-
-      for FILE in ${DOCKERFILES[@]} ; do
-        CONTAINER_IMG_TAG=$(create_container_tag "${FILE}")
-        run_cmd build "${CONTAINER_IMG_TAG}" "${FILE}"
-        run_cmd push "${CONTAINER_IMG_TAG}"
-      done
-
+    # Gather all files with .Dockerfile extension
+    DOCKERFILES=$(cd "${CONTAINER_DIR}" || exit ; find * -name '*.Dockerfile')
   else
-      CONTAINER_IMG_TAG="${CONTAINER_REPO}:${APP_VERSION}"
-      run_cmd build "${CONTAINER_IMG_TAG}"
-      run_cmd push "${CONTAINER_IMG_TAG}"
+    DOCKERFILES=("Dockerfile")
   fi
 
+  for FILE in ${DOCKERFILES[@]} ; do
+    CONTAINER_IMG_TAG=$(create_container_tag "${FILE}")
+    run_cmd build "${CONTAINER_IMG_TAG}" "${FILE}"
+    run_cmd push "${CONTAINER_IMG_TAG}"
+  done
   run_cmd cleanup
 
-}
-
-
-create_container_tag(){
-    local DOCKERFILE="$1"
-    SERVICE_NAME="/${DOCKERFILE%.*}"
-    CONTAINER_REPO=$(echo "${CONTAINER_REPO}" | cut -f1-2 -d "/")
-    echo "${CONTAINER_REPO}${SERVICE_NAME}:${APP_VERSION}"
 }
 
 main
