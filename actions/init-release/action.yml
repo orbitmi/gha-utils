@@ -38,6 +38,6 @@ runs:
     - name: Commit and push changes to release branch
       shell: bash
       run: |
-        git add docs/*
+        git add "${{ inputs.docs_dir }}/*"
         git commit -m "[bot] Generate changelog/docs for $(git branch --show-current)"
-        git push --set-upstream origin $(git branch --show-current)
+        git push --set-upstream origin "$(git branch --show-current)"
