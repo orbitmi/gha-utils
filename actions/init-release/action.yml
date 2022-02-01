@@ -9,10 +9,6 @@ inputs:
     description: 'Default directory for changelogs'
     required: false
     default: 'docs'
-  multi_release_branches:
-    description: 'Allow multiple release branch at the same time'
-    required: false
-    default: 'false'
   config_dir:
     description: 'Default directory for git-chglog configuration'
     required: false
@@ -23,8 +19,6 @@ runs:
     - name: Create release branch
       shell: bash
       id: app_release
-      env:
-        ALOW_MULTIPLE_RELEASE: ${{ inputs.multi_release_branches }}
       run: ${{ github.action_path }}/../../scripts/init_app_release.sh "${{ inputs.release_type }}"
     - name: Cleanup previous release notes
       shell: bash

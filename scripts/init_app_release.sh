@@ -8,7 +8,6 @@ set -o nounset
 ####
 RELEASE_TYPE="${1:-none}"
 DRYRUN_ENABLED="${DRY_RUN:+yes}"
-MULTI_RELEASE="${ALOW_MULTIPLE_RELEASE:-false}"
 
 LATEST_HEAD_SHA=$(git rev-parse HEAD)
 PREVIOUS_RELEASE_TAG=$(git describe --abbrev=0 --match="*.*.*" --tags || echo "0.0.0")
@@ -26,6 +25,17 @@ function fail {
 init_git() {
     git config --local user.name "${GIT_USER_NAME:-github-actions}"
     git config --local user.email "${GIT_USER_EMAIL:-41898282+github-actions[bot]@users.noreply.github.com}"
+}
+
+set_var() {
+    KEY="${1}"
+    VAL="${2}"
+
+    export "${KEY}=${VAL}"
+    # shellcheck disable=SC2086
+    echo "${KEY}=${VAL}" >> $GITHUB_ENV
+    echo "::set-output name=${KEY}::${VAL}"
+    echo ">>> New variable exported [ ${KEY} = ${VALUE} ]"
 }
 
 #
@@ -69,7 +79,7 @@ get_checkout_sha() {
 }
 
 release_branch_exists() {
-  if git branch -r | grep -q 'release/'; then echo "true"; else echo "false"; fi
+  if git branch -r | grep -q "release/${1}"; then echo "true"; else echo "false"; fi
 }
 
 #
@@ -78,16 +88,17 @@ release_branch_exists() {
 #     $(create_release_branch '1.2.3' 'minor') => (new branch) 1.3.0
 # shellcheck disable=SC2155
 create_release_branch() {
-  if [[ "$MULTI_RELEASE" == "false" ]] && [[ "$(release_branch_exists)" == "true" ]]; then
-    fail "Release branch already exists, we can't create new one!"
-  fi
-
   local NEW_VERSION=$(increment_version "${1}" "${2}")
   local CHECKOUT_SHA=$(get_checkout_sha "${2}")
   local RELEASE_BRANCH="release/${NEW_VERSION}"
 
-  echo "NEW_VERSION: ${NEW_VERSION}"
-  echo "CHECKOUT_SHA: ${CHECKOUT_SHA}"
+  set_var "new_version" "${NEW_VERSION}"
+  set_var "checkout_sha" "${CHECKOUT_SHA}"
+
+  if [[ "$(release_branch_exists "${NEW_VERSION}")" == "true" ]]; then
+    fail "Release branch '${RELEASE_BRANCH}' already exists, we can't create new one!"
+  fi
+
   SWITCH_CMD="git switch -c ${RELEASE_BRANCH} ${CHECKOUT_SHA}"
 
   if [[ "${DRYRUN_ENABLED}" == "yes" ]]; then
@@ -96,8 +107,6 @@ create_release_branch() {
   else
     eval "${SWITCH_CMD}"
   fi
-
-  echo "::set-output name=new_version::${NEW_VERSION}"
 }
 
 push_changes() {
@@ -106,8 +115,9 @@ push_changes() {
       echo ">>>> DRY RUN"
       echo "${PUSH_CMD}"
     else
-      echo "Check git status:"
+      echo ">>>Checking a git status before push"
       git status
+
       eval "${PUSH_CMD}"
     fi
 }

@@ -51,8 +51,3 @@ jobs:
           config_dir: 'testcfg'
 
 ```
-- **multi_release_branches** (EXPERIMENTAL)
-  The current version of this action doesn't support multiple release branches (only one release/x.x.x at the time)
-  because of potential conflicts in creating release version tags. The default values is set to `false`, 
-  but that behavior can be changed with this parameter. We are working towards improvements to remove this restriction.
-  Nevertheless, a final version of this action will prevent multiple branches of the same type.
