@@ -39,5 +39,5 @@ runs:
       shell: bash
       run: |
         git add "${{ inputs.docs_dir }}/*"
-        git commit -m "[bot] Generate changelog/docs for $(git branch --show-current)"
+        git commit -m "Generate release notes and documentation for $(git branch --show-current)"
         git push --set-upstream origin "$(git branch --show-current)"

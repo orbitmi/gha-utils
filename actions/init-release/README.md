@@ -45,9 +45,29 @@ jobs:
           token: ${{ secrets.CI_PAT }}
       - name: Prepare App for Release
         id: artifact
-        uses: htec-infra/gha-utils/actions/init-release@feature/init-release-update
+        uses: htec-infra/gha-utils/actions/init-release@main
         with:
           release_type: ${{ github.event.inputs.release_type }}
           config_dir: 'testcfg'
 
+```
+
+FAQ:
+
+1) How to replace `github-action[bot]` user with our internal bot
+
+You can achieve that by setting `GIT_USER_NAME` and `GIT_USER_EMAIL` environment variables in this action 
+
+Example:
+```
+...
+      - name: Prepare App for Release
+        id: artifact
+        uses: htec-infra/gha-utils/actions/init-release@main
+        env:
+          GIT_USER_NAME: ci[bot]
+          GIT_USER_EMAIL: ci-user@example.com
+        with:
+          release_type: ${{ github.event.inputs.release_type }}
+...
 ```
