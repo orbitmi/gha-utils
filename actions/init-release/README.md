@@ -52,7 +52,7 @@ jobs:
 
 ```
 
-FAQ:
+## FAQ
 
 1) How to replace `github-action[bot]` user with our internal bot
 
