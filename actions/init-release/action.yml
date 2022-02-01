@@ -7,15 +7,15 @@ inputs:
     default: 'patch'
   docs_dir:
     description: 'Default directory for changelogs'
-    required: true
+    required: false
     default: 'docs'
   multi_release_branches:
     description: 'Allow multiple release branch at the same time'
-    required: true
+    required: false
     default: 'false'
   config_dir:
     description: 'Default directory for git-chglog configuration'
-    required: true
+    required: false
     default: '.'
 runs:
   using: "composite"
@@ -39,7 +39,7 @@ runs:
         args: -c "${{ env.CONFIG_PATH }}" -o "${{ env.OUTPUT_PATH }}" --next-tag "${{ env.VERSION }}" "${{ env.VERSION }}"
     ###
     ### Do not move the following bash script into file, because previous script manipulates with the release branches
-    ### which can cause replacement of the initial init_app_release.sh contentsteps.app_release.outputs.new_versiosteps.app_release.outputs.new_versio
+    ### which can cause replacement of the initial init_app_release.sh content
     ###
     - name: Commit and push changes to release branch
       shell: bash
