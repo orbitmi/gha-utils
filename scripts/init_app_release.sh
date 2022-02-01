@@ -35,7 +35,7 @@ set_var() {
     # shellcheck disable=SC2086
     echo "${KEY}=${VAL}" >> $GITHUB_ENV
     echo "::set-output name=${KEY}::${VAL}"
-    echo ">>> New variable exported [ ${KEY} = ${VALUE} ]"
+    echo ">>> New variable exported [ ${KEY} = ${VAL} ]"
 }
 
 #
