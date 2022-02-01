@@ -1,0 +1,33 @@
+name: Initialize App Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        type: choice
+        description: Release Type
+        options: [ patch, minor, major ]
+jobs:
+  run:
+    name: Prepare '${{ github.event.inputs.release_type }}' version
+    runs-on: ubuntu-latest
+    steps:
+      # Checkout the source code first
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      # Checkout the configuration repo in the subdir `global-cfg`
+      - name: Checkout global config
+        uses: actions/checkout@v2
+        with:
+          repository: 'org/config-repo'
+          path: 'global-cfg'
+          token: ${{ secrets.CI_PAT }}
+      - name: Prepare App for Release
+        id: artifact
+        uses: htec-infra/gha-utils/actions/init-release@VERSION
+        with:
+          release_type: ${{ github.event.inputs.release_type }}
+          config_dir: 'global-cfg' # here specify the config directory root that is checked out in the previous step
