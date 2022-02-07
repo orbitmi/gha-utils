@@ -26,6 +26,7 @@ runs:
       run: |
         BODY=$(jq -n \
           --arg event_type "${{ inputs.event_type }}" \
-          --argjson client_payload "${{ inputs.client_payload }}" \
-          '$ARGS.named')
+          --argjson client_payload '${{ inputs.client_payload }}' \
+          '$ARGS.named'
+        )
         gh api "repos/${{ env.REPO }}/dispatches" --input - <<< $BODY
