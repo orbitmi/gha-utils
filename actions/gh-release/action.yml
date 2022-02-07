@@ -31,13 +31,13 @@ runs:
       run: |
         echo "Check release notes in docs"
         NOTES_FILE="docs/chglog/release-notes-${{ env.TAG_NAME }}.md"
-        NOTES_CMD_PARAM=--generate-notes
+        NOTES_CMD_PARAMS=(--generate-notes)
         if [[ -f "$NOTES_FILE" ]]; then
-          NOTES_CMD_PARAM="--notes-file $NOTES_FILE"
+          NOTES_CMD_PARAMS=("--notes-file" "$NOTES_FILE")
         fi
 
         echo "Create release"
         gh release create "${{ env.TAG_NAME }}" \
             --target "${{ env.TARGET }}" \
             --title "${{ env.TAG_NAME }}" \
-            "$NOTES_CMD_PARAM"
+            "$NOTES_CMD_PARAMS[@]}"
