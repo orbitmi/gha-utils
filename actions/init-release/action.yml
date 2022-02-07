@@ -29,7 +29,7 @@ runs:
         VERSION: ${{ steps.app_release.outputs.new_version }}
         CONFIG_PATH: ${{ inputs.config_dir }}/.chglog/config.yml
         OUTPUT_PATH: ${{ inputs.docs_dir }}/chglog/release-notes-${{ steps.app_release.outputs.new_version }}.md
-        REPOSITORY_URL: ${{ github.repositoryUrl }}
+        REPOSITORY_URL: ${{ github.server_url }}/${{ github.repository }}
       with:
         args: -c "${{ env.CONFIG_PATH }}" -o "${{ env.OUTPUT_PATH }}" --repository-url "${{ env.REPOSITORY_URL }}" --next-tag "${{ env.VERSION }}" "${{ env.VERSION }}"
     ###
