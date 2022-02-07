@@ -11,13 +11,18 @@ inputs:
   repository:
     description: ''
     required: false
+  # Secrets
+  gh_token:
+    description: 'GitHub Token'
+    required: false
 runs:
   using: "composite"
   steps:
     - name: Run Repo Workflow
       shell: bash
       env:
+        GITHUB_TOKEN: ${{ inputs.gh_token || github.token }}
         REPO: ${{ inputs.repository || github.repository }}
       run: |
-        gh api "repos/${{ env.REPO }}/dispatches" \
-            --raw-field "event_type=${{ inputs.event_type }}"
+        DATA=$(jq -n --arg event_type "${{ inputs.event_type }}" --argjson client_payload "${{ inputs.client_payload }}" '$ARGS.named')
+        gh api "repos/${{ env.REPO }}/dispatches" --input - <<< echo $DATA
