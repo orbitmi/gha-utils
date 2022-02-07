@@ -29,6 +29,7 @@ runs:
         TAG_NAME: ${{ inputs.app_version || env.APP_VERSION }}
         TARGET: ${{ inputs.app_revision || env.APP_REVISION }}
       run: |
+        gh auth login --with-token "${{ env. GITHUB_TOKEN }}"
         gh release create "${{ env.TAG_NAME }}" \
             --target "${{ env.TARGET}}" \
             --title "${{ env.TAG_NAME }}" \
