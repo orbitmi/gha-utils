@@ -30,7 +30,7 @@ runs:
         TARGET: ${{ inputs.app_revision || env.APP_REVISION }}
       run: |
         echo "Check release notes in docs"
-        local NOTES_FILE="docs/chglog/release-notes-${{ env.TAG_NAME }}.md"
+        NOTES_FILE="docs/chglog/release-notes-${{ env.TAG_NAME }}.md"
         NOTES_CMD_PARAM=--generate-notes
         if [[ -f "$NOTES_FILE" ]]; then
           NOTES_CMD_PARAM="--notes-file $NOTES_FILE"
