@@ -14,7 +14,7 @@ inputs:
   # Secrets
   gh_token:
     description: 'GitHub Token'
-    required: false
+    required: true
 runs:
   using: "composite"
   steps:
