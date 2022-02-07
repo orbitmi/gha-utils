@@ -40,4 +40,4 @@ runs:
         gh release create "${{ env.TAG_NAME }}" \
             --target "${{ env.TARGET }}" \
             --title "${{ env.TAG_NAME }}" \
-            "$NOTES_CMD_PARAMS[@]}"
+            "${NOTES_CMD_PARAMS[@]}"
