@@ -11,7 +11,7 @@ inputs:
 
 # Secrets
   gh_token:
-    description: 'Token'
+    description: 'GitHub Token'
     required: false
 
 runs:
@@ -22,14 +22,14 @@ runs:
         ref: ${{ inputs.app_revision }}
     - shell: bash
       run: ${{ github.action_path }}/../../scripts/repo_data.sh
+    - shell: bash
+      run: gh auth login --with-token "${{ inputs.gh_token || env.GITHUB_TOKEN  }}"
     - name: Create GitHub Relase
       shell: bash
       env:
-        GITHUB_TOKEN: ${{ inputs.gh_token || env.GITHUB_TOKEN }}
         TAG_NAME: ${{ inputs.app_version || env.APP_VERSION }}
         TARGET: ${{ inputs.app_revision || env.APP_REVISION }}
       run: |
-        gh auth login --with-token "${{ env. GITHUB_TOKEN }}"
         gh release create "${{ env.TAG_NAME }}" \
             --target "${{ env.TARGET}}" \
             --title "${{ env.TAG_NAME }}" \
