@@ -5,9 +5,12 @@ on:
     types: [ closed ]
     branches: [ main ]
 
+  repository_dispatch:
+    types: [ new_github_release ]
+
 # Global ENVs
 env:
-  APP_REVISION: ${{ github.event.pull_request.head.sha || github.sha }}
+  APP_REVISION: ${{ github.event.client_payload.name || github.event.pull_request.head.sha }}
 jobs:
   publish:
       # this job will only run if the PR has been merged and source branch is the 'release' branch
@@ -17,7 +20,7 @@ jobs:
       steps:
         - uses: actions/checkout@v2
           with:
-            ref: ${{ env.APP_REVISION }}    
+            ref: ${{ env.APP_REVISION }}
         - name: Create Release
           uses: htec-infra/gha-utils/actions/gh-release@VERSION
           with:
