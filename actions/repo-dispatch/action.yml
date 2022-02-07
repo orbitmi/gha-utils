@@ -24,5 +24,8 @@ runs:
         GITHUB_TOKEN: ${{ inputs.gh_token || github.token }}
         REPO: ${{ inputs.repository || github.repository }}
       run: |
-        DATA=$(jq -n --arg event_type "${{ inputs.event_type }}" --argjson client_payload "${{ inputs.client_payload }}" '$ARGS.named')
-        gh api "repos/${{ env.REPO }}/dispatches" --input - <<< echo $DATA
+        BODY=$(jq -n \
+          --arg event_type "${{ inputs.event_type }}" \
+          --argjson client_payload "${{ inputs.client_payload }}" \
+          '$ARGS.named')
+        gh api "repos/${{ env.REPO }}/dispatches" --input - <<< $BODY
