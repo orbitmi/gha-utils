@@ -9,13 +9,35 @@ inputs:
     description: 'Commit sha'
     required: false
 
+# Secrets
+  gh_token:
+    description: 'GitHub Token'
+    required: false
+
 runs:
   using: "composite"
   steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ inputs.app_revision }}
     - shell: bash
       run: ${{ github.action_path }}/../../scripts/repo_data.sh
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
-      with:
-        tag_name: ${{ inputs.app_version || env.APP_VERSION }}
-        target_commitish: ${{ inputs.app_revision || env.APP_REVISION }}
+    - name: Create GitHub Relase
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.gh_token || github.token }}
+        TAG_NAME: ${{ inputs.app_version || env.APP_VERSION }}
+        TARGET: ${{ inputs.app_revision || env.APP_REVISION }}
+      run: |
+        echo "Check release notes in docs"
+        NOTES_FILE="docs/chglog/release-notes-${{ env.TAG_NAME }}.md"
+        NOTES_CMD_PARAMS=(--generate-notes)
+        if [[ -f "$NOTES_FILE" ]]; then
+          NOTES_CMD_PARAMS=("--notes-file" "$NOTES_FILE")
+        fi
+
+        echo "Create release"
+        gh release create "${{ env.TAG_NAME }}" \
+            --target "${{ env.TARGET }}" \
+            --title "${{ env.TAG_NAME }}" \
+            "${NOTES_CMD_PARAMS[@]}"
