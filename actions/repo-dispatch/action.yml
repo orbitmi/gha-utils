@@ -44,8 +44,8 @@ runs:
         sleep 3 # wait for 3 seconds to propagate changes
         CREATED_AT=$(date --date="4 seconds ago" +%Y-%m-%dT%H:%M:%SZ)
         WFID=$(gh run list -R "${REPO}" \
-          --json name,event,conclusion,databaseId,status,createdAt \
-          -q '.[] | select(.status != "completed" and .createdAt >= "'"$CREATED_AT"'") | .databaseId'
+          --json databaseId,event,status,createdAt \
+          -q '.[] | select(.status != "completed" and .event == "repository_dispatch" and .createdAt >= "'"$CREATED_AT"'") | .databaseId'
         )
 
-        gh run watch "$WFID" -R "${REPO}" --exit-status 1
+        gh run watch "$WFID" -R "${REPO}" --exit-status 69
