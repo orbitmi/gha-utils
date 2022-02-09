@@ -20,9 +20,11 @@ runs:
       shell: bash
       run: |
         FILE_PATH="${{ github.action_path }}/payloads/${{ inputs.msg_format }}.json"
-        echo "$(cat $FILE_PATH)" > "${{ github.action_path }}/parsed.json"
 
-        cat "${{ github.action_path }}/parsed.json"
+        EOF=EOF_$RANDOM; eval echo "\"$(cat <<$EOF
+        $(<$FILE_PATH)
+        $EOF
+        )\""
 
     # Visit https://app.slack.com/block-kit-builder/ to build your custom message format
     - name: Send payload to Slack Workflow Builder
