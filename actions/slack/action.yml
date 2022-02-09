@@ -22,6 +22,7 @@ runs:
         FILE_PATH="${{ github.action_path }}/payloads/${{ inputs.msg_format }}.json"
         echo "::set-output name=file_path::${FILE_PATH}"
 
+    # Visit https://app.slack.com/block-kit-builder/ to build your custom message format
     - name: Send payload to Slack Workflow Builder
       id: slack
       uses: slackapi/slack-github-action@v1.18.0
