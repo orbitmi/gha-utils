@@ -1,17 +1,17 @@
 name: GitHub Release
 on:
   repository_dispatch:
-    types: [ new_github_release ]
+    types: [ create_github_release ]
     # inputs
     #    version: <semantic>
     #    revision: <git-sha>
 
 jobs:
-  publish:
-      name: Publish
+  release:
+      name: Create Release >> ${{ github.event.client_payload.version }}
       runs-on: ubuntu-latest
       steps:
-        - name: Create Release
+        - name: Run github-release action
           uses: htec-infra/gha-utils/actions/gh-release@VERSION
           with:
             app_version: ${{ github.event.client_payload.version }} # optional
