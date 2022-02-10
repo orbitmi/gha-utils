@@ -4,6 +4,9 @@ inputs:
   message:
     description: 'Body content'
     required: true
+  status:
+    description: 'Set pipeline status'
+    required: false
   msg_format:
     description: 'Format of the Slack message'
     required: false
@@ -18,10 +21,24 @@ runs:
     - name: Install envsubst
       shell: bash
       run: sudo apt-get install -y gettext-base
-    - name: Resolve Payload type
+    - name: Prepare message for sending
       id: payload
       shell: bash
       run: |
+        WF_STATUS=${{ inputs.status || job.status }}
+
+        case "$WF_STATUS" in
+          success)
+            WF_STATUS_COLOR=#00de94
+            ;;
+          failure)
+            WF_STATUS_COLOR=#de0000
+            ;;
+          *)
+            WF_STATUS_COLOR=#5e5e5e
+            ;;
+        esac
+
         FILE_PATH="${{ github.action_path }}/payloads/${{ inputs.msg_format }}.json"
         envsubst < $FILE_PATH > ${{ github.action_path }}/parsed.json
 

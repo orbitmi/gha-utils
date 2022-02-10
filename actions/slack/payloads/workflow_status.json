@@ -1,13 +1,13 @@
 {
   "attachments": [
     {
-      "color": "#d90000",
+      "color": "${WF_STATUS_COLOR}",
       "blocks": [
         {
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": "${GITHUB_WORKFLOW} workflow failed on ${GITHUB_REF_NAME} branch in the ${GITHUB_REPOSITORY} repository!"
+            "text": "${GITHUB_WORKFLOW} workflow ${WF_STATUS} on ${GITHUB_REF_NAME} branch in the ${GITHUB_REPOSITORY} repository!"
           }
         },
         {
@@ -20,7 +20,7 @@
               "type": "button",
               "text": {
                 "type": "plain_text",
-                "text": "Build",
+                "text": "Open Workflow",
                 "emoji": true
               },
               "url": "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
@@ -29,7 +29,7 @@
               "type": "button",
               "text": {
                 "type": "plain_text",
-                "text": "Commit",
+                "text": "Check Commit",
                 "emoji": true
               },
               "url": "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
