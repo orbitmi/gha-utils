@@ -25,7 +25,7 @@ runs:
         if [[ -z "${{ inputs.app_version }}" ]] || [[ -z "${{ inputs.app_revision }}" ]]; then
           ${{ github.action_path }}/../../scripts/repo_data.sh
         else
-          echo "Version or revision inputs are set. Skipping...
+          echo "Version or revision inputs are set. Skipping..."
         fi
     - name: Create GitHub Relase
       shell: bash
