@@ -18,14 +18,15 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Install envsubst
-      shell: bash
+    - shell: bash
       run: sudo apt-get install -y gettext-base
-    - name: Prepare message for sending
-      id: payload
+    - id: payload
       shell: bash
+      env:
+        MESSAGE: ${{ inputs.message }}
+        WF_STATUS: ${{ inputs.status || job.status }}
       run: |
-        export WF_STATUS=${{ inputs.status || job.status }}
+        echo "Prepare message for sending"
 
         case "$WF_STATUS" in
           success)

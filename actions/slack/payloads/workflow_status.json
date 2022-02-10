@@ -11,6 +11,13 @@
           }
         },
         {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "**Details:**\n${MESSAGE}"
+          }
+        },
+        {
           "type": "divider"
         },
         {
