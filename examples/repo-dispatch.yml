@@ -1,0 +1,30 @@
+name: Run Repository Dispatch with manual trigger
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Manual trigger for test_event
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger
+        uses: htec-infra/gha-utils/actions/repo-dispatch@VERSION
+        with:
+          # required - Always use Personal Access Token with `repo` permissions
+          # because regular GITHUB_TOKEN doesn't have a permission to trigger repository_dispatch event
+          gh_token: ${{ secrets.CI_PAT }}
+
+          # required - event identifier in the destination workflow
+          event_type: test_event
+
+          # optional - additional (json) parameters that can be used in the destination workflow
+          client_payload: '{"env": "dev", "version": "1.2.3", "repo": "owner/repository"}'
+
+          # optional - current repository is used by default
+          repository: 'owner/repository'
+
+          # optional - this parameter will run `gh watch` cli command to keep this step
+          # running until triggered workflow finish.
+          # If triggered step fails, that will be propagated to this workflow as well.
+          wait: true
+
