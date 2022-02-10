@@ -1,28 +1,18 @@
 name: GitHub Release
 on:
-  # Triggers the workflow on pull request close event, but only for the main branch
-  pull_request:
-    types: [ closed ]
-    branches: [ main ]
-
   repository_dispatch:
     types: [ new_github_release ]
+    # inputs
+    #    version: <semantic>
+    #    revision: <git-sha>
 
-# Global ENVs
-env:
-  APP_REVISION: ${{ github.event.client_payload.name || github.event.pull_request.head.sha }}
 jobs:
   publish:
-      # this job will only run if the PR has been merged and source branch is the 'release' branch
-      if: github.event.pull_request.merged == true  && contains(github.head_ref, 'release/')
       name: Publish
       runs-on: ubuntu-latest
       steps:
-        - uses: actions/checkout@v2
-          with:
-            ref: ${{ env.APP_REVISION }}
         - name: Create Release
           uses: htec-infra/gha-utils/actions/gh-release@VERSION
           with:
-            app_version: "${{ env.APP_REVISION }}" # optional
-            app_revision: "rc-1" # optional
+            app_version: ${{ github.event.client_payload.version }} # optional
+            app_revision:  ${{ github.event.client_payload.revision }} # optional

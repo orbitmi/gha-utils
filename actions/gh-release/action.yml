@@ -19,9 +19,14 @@ runs:
   steps:
     - uses: actions/checkout@v2
       with:
-        ref: ${{ inputs.app_revision }}
+        ref: ${{ inputs.app_revision || github.event.pull_request.head.sha }}
     - shell: bash
-      run: ${{ github.action_path }}/../../scripts/repo_data.sh
+      run: |
+        if [[ -z "${{ inputs.app_version }}" ]] || [[ -z "${{ inputs.app_revision }}" ]]; then
+          ${{ github.action_path }}/../../scripts/repo_data.sh
+        else
+          echo "Version or revision inputs are set. Skipping...
+        fi
     - name: Create GitHub Relase
       shell: bash
       env:
