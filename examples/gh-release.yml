@@ -8,7 +8,7 @@ on:
 
 jobs:
   release:
-      name: Create Release >> ${{ github.event.client_payload.version }}
+      name: Create Release >> ${{ github.event.client_payload.version || "unknow" }}
       runs-on: ubuntu-latest
       steps:
         - name: Run github-release action

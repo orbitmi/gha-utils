@@ -19,7 +19,7 @@ runs:
   steps:
     - uses: actions/checkout@v2
       with:
-        ref: ${{ inputs.app_revision || github.event.pull_request.head.sha }}
+        ref: ${{ inputs.app_revision || github.event.pull_request.head.sha || github.sha }}
     - shell: bash
       run: |
         if [[ -z "${{ inputs.app_version }}" ]] || [[ -z "${{ inputs.app_revision }}" ]]; then
@@ -34,14 +34,14 @@ runs:
         TAG_NAME: ${{ inputs.app_version || env.APP_VERSION }}
         TARGET: ${{ inputs.app_revision || env.APP_REVISION }}
       run: |
-        echo "Check release notes in docs"
+        echo "Check '${{ env.TAG_NAME }}' release notes in 'docs' directory"
         NOTES_FILE="docs/chglog/release-notes-${{ env.TAG_NAME }}.md"
         NOTES_CMD_PARAMS=(--generate-notes)
         if [[ -f "$NOTES_FILE" ]]; then
           NOTES_CMD_PARAMS=("--notes-file" "$NOTES_FILE")
         fi
 
-        echo "Create release"
+        echo "Create release ${{ env.TAG_NAME }}"
         gh release create "${{ env.TAG_NAME }}" \
             --target "${{ env.TARGET }}" \
             --title "${{ env.TAG_NAME }}" \
