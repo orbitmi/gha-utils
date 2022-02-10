@@ -14,7 +14,7 @@
           "type": "section",
           "text": {
             "type": "mrkdwn",
-            "text": "**Details:**\n${MESSAGE}"
+            "text": "<b>Details:</b>\n${MESSAGE}"
           }
         },
         {
