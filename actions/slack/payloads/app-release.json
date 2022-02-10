@@ -1,0 +1,42 @@
+{
+  "attachments": [
+    {
+      "color": "#d90000",
+      "blocks": [
+        {
+          "type": "section",
+          "text": {
+            "type": "mrkdwn",
+            "text": "${GITHUB_WORKFLOW} workflow failed on ${GITHUB_REF_NAME} branch in the ${GITHUB_REPOSITORY} repository!"
+          }
+        },
+        {
+          "type": "divider"
+        },
+        {
+          "type": "actions",
+          "elements": [
+            {
+              "type": "button",
+              "text": {
+                "type": "plain_text",
+                "text": "Build",
+                "emoji": true
+              },
+              "url": "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+            },
+            {
+              "type": "button",
+              "text": {
+                "type": "plain_text",
+                "text": "Commit",
+                "emoji": true
+              },
+              "url": "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

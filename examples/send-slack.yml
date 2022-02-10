@@ -1,0 +1,15 @@
+name: Send Slack
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Trigger Slack Send
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run auto-deploy
+        uses: htec-infra/gha-utils/actions/slack@VERSION
+        with:
+          message: "Generate your custom message"
+          msg_format: app-release # plain || app-release are only available at the moment
+          slack_webhook: ${{ secrets.SLACK_WEBHOOK }}

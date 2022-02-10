@@ -1,0 +1,37 @@
+name: 'Send Message to Slack'
+description: 'Action that sends Slack messages based on the message format'
+inputs:
+  message:
+    description: 'Body content'
+    required: true
+  msg_format:
+    description: 'Format of the Slack message'
+    required: false
+    default: 'plain'
+  # Secrets
+  slack_webhook:
+    description: 'Slack Webhook URL'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Resolve Payload type
+      id: payload
+      shell: bash
+      run: |
+        FILE_PATH="${{ github.action_path }}/payloads/${{ inputs.msg_format }}.json"
+
+        EOF=EOF_$RANDOM; eval echo "\"$(cat <<$EOF
+        $(<$FILE_PATH)
+        $EOF
+        )\""
+
+    # Visit https://app.slack.com/block-kit-builder/ to build your custom message format
+    - name: Send payload to Slack Workflow Builder
+      id: slack
+      uses: slackapi/slack-github-action@v1.18.0
+      with:
+        payload-file-path: ${{ github.action_path }}/parsed.json
+      env:
+        SLACK_WEBHOOK_URL: ${{ inputs.slack_webhook }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
