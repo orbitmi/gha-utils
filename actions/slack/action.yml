@@ -15,16 +15,15 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Install envsubst
+      shell: bash
+      run: sudo apt-get install -y gettext-base
     - name: Resolve Payload type
       id: payload
       shell: bash
       run: |
         FILE_PATH="${{ github.action_path }}/payloads/${{ inputs.msg_format }}.json"
-
-        EOF=EOF_$RANDOM; eval echo "\"$(cat <<$EOF
-        $(<$FILE_PATH)
-        $EOF
-        )\""
+        envsubst < $FILE_PATH > ${{ github.action_path }}/parsed.json
 
     # Visit https://app.slack.com/block-kit-builder/ to build your custom message format
     - name: Send payload to Slack Workflow Builder
