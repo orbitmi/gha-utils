@@ -25,17 +25,17 @@ runs:
       id: payload
       shell: bash
       run: |
-        WF_STATUS=${{ inputs.status || job.status }}
+        export WF_STATUS=${{ inputs.status || job.status }}
 
         case "$WF_STATUS" in
           success)
-            WF_STATUS_COLOR=#00de94
+            export WF_STATUS_COLOR=#00de94
             ;;
           failure)
-            WF_STATUS_COLOR=#de0000
+            export WF_STATUS_COLOR=#de0000
             ;;
           *)
-            WF_STATUS_COLOR=#5e5e5e
+            export WF_STATUS_COLOR=#5e5e5e
             ;;
         esac
 
