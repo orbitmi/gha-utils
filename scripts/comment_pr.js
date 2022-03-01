@@ -1,11 +1,14 @@
 const fs = require('fs')
 
 module.exports = ({github, context, pr_msg}) => {
-  if (context.eventName == "pull_request") {
+  const { GITHUB_WORKSPACE } = process.env
+
+  if (context.eventName === "pull_request") {
     let body
     const {issue: {number: issue_number}, repo: {owner, repo}} = context;
     if (pr_msg.startsWith('file::')) {
-      body = fs.readFileSync(pr_msg.split('::')[1], 'utf8')
+      const filename = GITHUB_WORKSPACE.concat("/").concat(pr_msg.split('::')[1])
+      body = fs.readFileSync(filename, 'utf8')
     } else {
       body = decodeURI(`👋 Hey!\n ${pr_msg}`);
     }
