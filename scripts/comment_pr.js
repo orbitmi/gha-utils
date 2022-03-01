@@ -7,7 +7,7 @@ module.exports = ({github, context, pr_msg}) => {
     let body
     const {issue: {number: issue_number}, repo: {owner, repo}} = context;
     if (pr_msg.startsWith('file::')) {
-      const filename = GITHUB_WORKSPACE.concat("/").concat(pr_msg.split('::')[1])
+      const filename = pr_msg.split('::')[1]
       body = fs.readFileSync(filename, 'utf8')
     } else {
       body = decodeURI(`👋 Hey!\n ${pr_msg}`);
