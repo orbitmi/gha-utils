@@ -12,8 +12,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - id: Prepare content
-      shell: bash
+    - shell: bash
       run: |
         if [[ -n "${{ inputs.message }}" ]]; then
           echo "Comment body provided"
@@ -21,8 +20,7 @@ runs:
           echo "PR comment not provided. Running 'repo_data' script to generate REPO_SUMMARY"
           ${{ github.action_path }}/../../scripts/repo_data.sh
         fi
-    - name: Comment PR
-      uses: actions/github-script@v6
+    - uses: actions/github-script@v6
       env:
         PR_MSG: ${{ inputs.message || steps.repo_data.outputs.REPO_SUMMARY }}
       with:
