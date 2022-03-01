@@ -2,9 +2,6 @@ name: 'Container operations'
 description: 'Publish comment on PR'
 
 inputs:
-  github_token:
-    description: 'Github access token'
-    required: true
   message:
     description: 'Repo summary'
     required: false
@@ -24,7 +21,6 @@ runs:
       env:
         PR_MSG: ${{ inputs.message || steps.repo_data.outputs.REPO_SUMMARY }}
       with:
-        github-token: ${{ inputs.github_token }}
         script: |
           const { GITHUB_ACTION_PATH, PR_MSG } = process.env
           const script = require(`${GITHUB_ACTION_PATH}/../../scripts/comment_pr.js`)
