@@ -10,7 +10,7 @@ module.exports = ({github, context, pr_msg}) => {
       const filename = pr_msg.split('::')[1]
       body = fs.readFileSync(filename, 'utf8')
     } else {
-      body = decodeURI(`👋 Hey!\n ${pr_msg}`);
+      body = decodeURI(pr_msg);
     }
 
     github.rest.issues.createComment({issue_number, owner, repo, body});

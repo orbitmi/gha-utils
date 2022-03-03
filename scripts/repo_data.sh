@@ -26,7 +26,7 @@ resolve_app_version() {
         if [[ -z "${GITHUB_REF##*/pull/*}" ]]; then
             set_var APP_RELEASE_TYPE "Beta (Pre-release)"
             set_var APP_VERSION "${GITHUB_HEAD_REF##release/}-rc.${GITHUB_RUN_NUMBER}"
-        fi        
+        fi
     else
       if [[ -z "${GITHUB_REF##*main}" ]] || [[ -z "${GITHUB_REF##*master}" ]]; then
         set_var APP_RELEASE_TYPE "Alpha (Debug)"
@@ -63,11 +63,12 @@ report() {
 
 generate_repo_summary() {
   SUMMARY=$(cat <<END
-Released version: ${APP_VERSION}
+🎉 Congrats! New version *${APP_VERSION}* is released and ready for deployment 🚀🚀🚀
 
 <details>
-<summary>Repo spec:</summary>
+<summary>Artifact details:</summary>
 <br>
+
 Image: ${CONTAINER_REPO}:${APP_VERSION}
 </details>
 END
