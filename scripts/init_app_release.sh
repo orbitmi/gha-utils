@@ -10,7 +10,7 @@ RELEASE_TYPE="${1:-none}"
 DRYRUN_ENABLED="${DRY_RUN:+yes}"
 
 LATEST_HEAD_SHA=$(git rev-parse HEAD)
-PREVIOUS_RELEASE_TAG=$(git describe --abbrev=0 --match="*.*.*" --tags || echo "0.0.0")
+PREVIOUS_RELEASE_TAG=$(git describe --tags --abbrev=0 --match="*.*.*" "$(git rev-list --tags --max-count=1)" || echo "0.0.0")
 LATEST_TAG_SHA=$(git rev-list -n 1 "$PREVIOUS_RELEASE_TAG" || echo "$LATEST_HEAD_SHA")
 
 #######
