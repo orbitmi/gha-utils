@@ -38,7 +38,7 @@ resolve_app_version() {
       fi
       if [[ -z "${GITHUB_REF##*/poc/*}" ]]; then
         set_var APP_RELEASE_TYPE "Experimental"
-        set_var APP_VERSION "experimental-${GITHUB_SHA::7}"
+        set_var APP_VERSION "poc-${GITHUB_SHA::7}"
       fi
       if [[ -z "${GITHUB_REF##*/tags/*}" ]]; then
         set_var APP_RELEASE_TYPE "Production"
