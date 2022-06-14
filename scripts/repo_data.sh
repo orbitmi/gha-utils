@@ -36,6 +36,10 @@ resolve_app_version() {
         set_var APP_RELEASE_TYPE "Beta (Pre-release)"
         set_var APP_VERSION "${GITHUB_REF##refs/heads/release/}-rc.${GITHUB_RUN_NUMBER}"
       fi
+      if [[ -z "${GITHUB_REF##*/poc/*}" ]]; then
+        set_var APP_RELEASE_TYPE "Proof of Concept (Experiment)"
+        set_var APP_VERSION "poc-${GITHUB_SHA::7}"
+      fi
       if [[ -z "${GITHUB_REF##*/tags/*}" ]]; then
         set_var APP_RELEASE_TYPE "Production"
         set_var APP_VERSION "${GITHUB_REF##refs/tags/}"
