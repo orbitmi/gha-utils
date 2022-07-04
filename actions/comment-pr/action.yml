@@ -6,6 +6,10 @@ inputs:
     description: 'Repo summary'
     required: false
 
+  gh_token:
+    description: 'GitHub token or PAT'
+    required: false
+
 runs:
   using: "composite"
   steps:
@@ -21,6 +25,7 @@ runs:
       env:
         PR_MSG: ${{ inputs.message || steps.repo_data.outputs.REPO_SUMMARY }}
       with:
+        github-token: ${{ inputs.gh_token || github.token }}
         script: |
           const { GITHUB_ACTION_PATH, PR_MSG } = process.env
           const script = require(`${GITHUB_ACTION_PATH}/../../scripts/comment_pr.js`)
