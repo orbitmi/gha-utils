@@ -89,7 +89,7 @@ if [[ -f "${APP_CONFIG_FILE}" ]]; then
     set_var "CONTAINER_REPO" "$(echo "${CONTAINER_REPO}")"
 else
     echo "Application Config not found here: ${APP_CONFIG_FILE}"
-    set_var "CONTAINER_REPO" "$(echo "null")"
+    set_var "CONTAINER_REPO" "$(echo "undefined")"
 fi
 
 APP_REPO="${GITHUB_REPOSITORY}"
