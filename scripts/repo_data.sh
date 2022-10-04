@@ -80,14 +80,17 @@ END
   set_var "REPO_SUMMARY" "$SUMMARY"
 }
 
-
+# app.conf should have specific key-value pair for example:
+# CONTAINER_REPO=hub.docker.com
 APP_CONFIG_FILE="${GITHUB_WORKSPACE}/infra/app.conf"
 if [[ -f "${APP_CONFIG_FILE}" ]]; then
     echo "Application Config detected! Loading parameters..."
     # shellcheck source=${GITHUB_WORKSPACE}/infra/app.conf
     source "${APP_CONFIG_FILE}"
+    set_var "CONTAINER_REPO" "${CONTAINER_REPO}"
 else
     echo "Application Config not found here: ${APP_CONFIG_FILE}"
+    set_var "CONTAINER_REPO" "undefined"
 fi
 
 APP_REPO="${GITHUB_REPOSITORY}"
