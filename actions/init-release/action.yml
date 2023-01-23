@@ -24,7 +24,7 @@ runs:
       shell: bash
       run: git rm --ignore-unmatch "${{ inputs.docs_dir }}/chglog/release-notes*"
     - name: Generate Release Notes
-      uses: docker://quay.io/git-chglog/git-chglog:latest
+      uses: docker://quay.io/git-chglog/git-chglog:0.15.1
       env:
         VERSION: ${{ steps.app_release.outputs.new_version }}
         CONFIG_PATH: ${{ inputs.config_dir }}/.chglog/config.yml
