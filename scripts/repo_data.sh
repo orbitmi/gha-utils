@@ -12,7 +12,7 @@ set_var() {
     export "${KEY}=${VAL}"
     # shellcheck disable=SC2086
     echo "${KEY}=${VAL}" >> $GITHUB_ENV
-    echo "::set-output name=${KEY}::${VAL}"
+    echo "${KEY}=${VAL}" >> $GITHUB_OUTPUT
 }
 
 resolve_app_version() {
