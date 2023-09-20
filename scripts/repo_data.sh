@@ -28,7 +28,7 @@ resolve_app_version() {
             set_var APP_VERSION "${GITHUB_HEAD_REF##release/}-rc.${GITHUB_RUN_NUMBER}"
         fi
     else
-      if [[ -z "${GITHUB_REF##*main}" ]] || [[ -z "${GITHUB_REF##*master}" ]]; then
+      if [[ -z "${GITHUB_REF##*main}" ]] || [[ -z "${GITHUB_REF##*master}" ]] || [[ -z "${GITHUB_REF##*dev*}" ]]; then
         set_var APP_RELEASE_TYPE "Alpha (Debug)"
         set_var APP_VERSION "alpha-${GITHUB_SHA::7}"
       fi
