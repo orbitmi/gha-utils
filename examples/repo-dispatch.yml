@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Trigger
-        uses: htec-infra/gha-utils/actions/repo-dispatch@VERSION
+        uses: orbitmi/gha-utils/actions/repo-dispatch@VERSION
         with:
           # required - Always use Personal Access Token with `repo` permissions
           # because regular GITHUB_TOKEN doesn't have a permission to trigger repository_dispatch event

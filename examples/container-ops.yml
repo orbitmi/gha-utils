@@ -11,6 +11,6 @@ jobs:
     steps:
       - name: Build and push container image
         id: container_ops
-        uses: htec-infra/gha-utils/actions/container-ops@VERSION
+        uses: orbitmi/gha-utils/actions/container-ops@VERSION
         with:
           push_image: "true or false" # default false

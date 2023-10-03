@@ -21,6 +21,6 @@ jobs:
           token: ${{ secrets.CI_PAT }}
       - name: Prepare App for Release
         id: artifact
-        uses: htec-infra/gha-utils/actions/init-release@VERSION
+        uses: orbitmi/gha-utils/actions/init-release@VERSION
         with:
           release_type: ${{ github.event.inputs.release_type }}

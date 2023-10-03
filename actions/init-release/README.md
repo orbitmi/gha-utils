@@ -40,12 +40,12 @@ jobs:
       - name: Checkout config
         uses: actions/checkout@v2
         with:
-          repository: 'htec-infra/tbd-test'
+          repository: 'orbitmi/tbd-test'
           path: 'testcfg' 
           token: ${{ secrets.CI_PAT }}
       - name: Prepare App for Release
         id: artifact
-        uses: htec-infra/gha-utils/actions/init-release@main
+        uses: orbitmi/gha-utils/actions/init-release@main
         with:
           release_type: ${{ github.event.inputs.release_type }}
           config_dir: 'testcfg'
@@ -63,7 +63,7 @@ Example:
 ...
       - name: Prepare App for Release
         id: artifact
-        uses: htec-infra/gha-utils/actions/init-release@main
+        uses: orbitmi/gha-utils/actions/init-release@main
         env:
           GIT_USER_NAME: ci[bot]
           GIT_USER_EMAIL: ci-user@example.com

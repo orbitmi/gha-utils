@@ -12,7 +12,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
         - name: Run github-release action
-          uses: htec-infra/gha-utils/actions/gh-release@VERSION
+          uses: orbitmi/gha-utils/actions/gh-release@VERSION
           with:
             app_version: ${{ github.event.client_payload.version }} # optional
             app_revision:  ${{ github.event.client_payload.revision }} # optional

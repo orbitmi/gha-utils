@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Get repo data
         id: repo_data
-        uses: htec-infra/gha-utils/actions/repo-data@VERSION
+        uses: orbitmi/gha-utils/actions/repo-data@VERSION
       - name: Print output
         run: |
           echo Organization name: "${{ steps.repo_data.outputs.org_name }}"

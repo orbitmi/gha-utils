@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run auto-deploy
-        uses: htec-infra/gha-utils/actions/slack@VERSION
+        uses: orbitmi/gha-utils/actions/slack@VERSION
         with:
           message: "Generate your custom message"
           msg_format: app-release # plain || app-release are only available at the moment
